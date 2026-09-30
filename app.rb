@@ -32,15 +32,29 @@ class WordGuesserApp < Sinatra::Base
     # NOTE: don't change previous line - it's needed by autograder!
 
     @game = WordGuesserGame.new(word)
+    session[:game] = @game
     redirect '/show'
   end
 
   # Use existing methods in WordGuesserGame to process a guess.
   # If a guess is repeated, set flash[:message] to "You have already used that letter."
   # If a guess is invalid, set flash[:message] to "Invalid guess."
+
   post '/guess' do
-    params[:guess].to_s[0]
-    ### YOUR CODE HERE ###
+    letter = params[:guess].to_s[0]
+      @game = session[:game]
+      
+      
+    begin
+      unless letter.nil? || letter.empty?
+        @game.guess(letter)
+      end
+    rescue ArgumentError
+      flash[:message] = "Invalid guess."
+    end
+    
+    session[:game] = @game
+    
     redirect '/show'
   end
 

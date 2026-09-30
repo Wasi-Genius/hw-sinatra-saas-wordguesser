@@ -9,11 +9,10 @@ RUN gem install bundler -v "$BUNDLER_VERSION"
 # Set a standard absolute working directory
 WORKDIR /app
 
-# Set Rack/Sinatra to production environment
-ENV RACK_ENV="production" \
+# Set up a development bundle so tools like rerun and guard are available.
+ENV RACK_ENV="development" \
     BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development:test"
+    BUNDLE_PATH="/usr/local/bundle"
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
